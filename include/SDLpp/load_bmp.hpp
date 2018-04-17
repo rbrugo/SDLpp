@@ -5,8 +5,8 @@
  * @license     : MIT
  * */
 
-#ifndef LOAD_BMP_HPP
-#define LOAD_BMP_HPP
+#ifndef SDLPP_LOAD_BMP_HPP
+#define SDLPP_LOAD_BMP_HPP
 
 #include <string_view>
 #include <optional>
@@ -16,16 +16,18 @@
 namespace SDLpp
 {
 
-std::optional<surface> load_bmp(std::string_view filename)
+inline std::optional<surface> load_bmp(std::string_view filename)
 {
     surface res;
     res.load_bmp(filename);
 
-    if (res.valid()) return std::optional{std::move(res)};
+    if (res.valid()) {
+        return std::optional{std::move(res)};
+    }
     return std::nullopt;
 }
 
 } // namespace SDLpp
 
-#endif /* LOAD_BMP_HPP */
+#endif /* SDLPP_LOAD_BMP_HPP */
 

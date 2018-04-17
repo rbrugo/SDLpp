@@ -5,8 +5,8 @@
  * @license     : MIT
  * */
 
-#ifndef surface_HPP
-#define surface_HPP
+#ifndef SDLPP_SURFACE_HPP
+#define SDLPP_SURFACE_HPP
 
 //#include "surface.hpp"
 //#include "owning_surface.hpp"
@@ -16,6 +16,10 @@
 #include <SDL2/SDL.h>
 #include <optional>
 #include "rectangle.hpp"
+
+#ifndef SDLPP_NO_SDL_IMG
+#   include <SDL2/SDL_image.h>
+#endif //SDLPP_NO_SDL_IMG
 
 namespace SDLpp
 {
@@ -49,8 +53,14 @@ public:
     surface & operator=(SDL_Surface &);
 
     surface & load_bmp(std::string_view filename);
-
+#ifndef SDLPP_NO_SDL_IMG
+    surface & load(std::string_view filename);
+#endif //SDLPP_NO_SDL_IMG
     surface & fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect = {});
+    auto geometry() const;
+
+    auto pixel_format() const -> SDL_PixelFormat *;
+    surface & convert(SDL_PixelFormat const * fmt);
 
     decltype(auto) handler() const { return _handler.get(); }
     bool valid() const { return static_cast<bool>(_handler); }
@@ -74,11 +84,20 @@ auto surface::operator=(SDL_Surface & s) -> surface &
     return *this;
 }
 
-auto surface::load_bmp( std::string_view filename ) -> surface &
+inline auto surface::load_bmp( std::string_view filename ) -> surface &
 {
     _handler.reset(SDL_LoadBMP(filename.data()));
     return *this;
 }
+
+#ifndef SDLPP_NO_SDL_IMG
+inline auto surface::load(std::string_view filename) -> surface &
+{
+    _handler.reset(IMG_Load(filename.data()));
+    return *this;
+}
+#endif //SDLPP_NO_SDL_IMG
+
 
 auto surface::fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect)
     -> surface &
@@ -87,11 +106,32 @@ auto surface::fill(color_t color, std::optional<std::reference_wrapper<rectangle
         auto temp = static_cast<SDL_Rect>(rect->get());
         SDL_FillRect( handler(), std::addressof(temp), color);
     }
-    else SDL_FillRect( handler(), nullptr, color ); //SDL_FillRect should not own the pointer
+    else { SDL_FillRect( handler(), nullptr, color ); } //SDL_FillRect should not own the pointer
 
+    return *this;
+}
+
+inline auto surface::geometry() const
+{
+    return static_cast<rectangle>( handler()->clip_rect );
+}
+
+auto surface::pixel_format() const -> SDL_PixelFormat *
+{
+    if ( ! _handler ) {
+        return nullptr;
+    }
+    return _handler->format;
+}
+
+auto surface::convert(SDL_PixelFormat const * fmt) -> surface &
+{
+    if ( ! _handler ) { return *this; }
+    auto res = SDL_ConvertSurface(_handler.get(), fmt, 0);
+    _handler.reset(res);
     return *this;
 }
 
 } // namespace SDLpp
 
-#endif /* surface_HPP */
+#endif /* SDLPP_SURFACE_HPP */

@@ -5,12 +5,14 @@
  * @license     : MIT
  * */
 
-#ifndef INIT_FLAGS_HPP
-#define INIT_FLAGS_HPP
+#ifndef SDLPP_INIT_FLAGS_HPP
+#define SDLPP_INIT_FLAGS_HPP
 
 #include <SDL2/SDL.h>
 
 namespace SDLpp
+{
+namespace flag
 {
 
 enum class init : decltype(SDL_INIT_VIDEO) //window init
@@ -26,26 +28,27 @@ enum class init : decltype(SDL_INIT_VIDEO) //window init
     everything  = SDL_INIT_EVERYTHING,
     noparachute = SDL_INIT_NOPARACHUTE
 };
-inline init operator &(init a, init b)
+constexpr init operator &(init a, init b) noexcept
 {
     return static_cast<init>( static_cast<uint32_t>(a) & static_cast<uint32_t>(b) );
 }
-inline init & operator &=(init & a, init b)
+constexpr init & operator &=(init & a, init b) noexcept
 {
     a = a & b;
     return a;
 }
-inline init operator |(init a, init b)
+constexpr init operator |(init a, init b) noexcept
 {
     return static_cast<init>( static_cast<uint32_t>(a) | static_cast<uint32_t>(b) );
 }
-inline init & operator |=(init & a, init b)
+constexpr init & operator |=(init & a, init b) noexcept
 {
     a = a | b;
     return a;
 }
 
+} // namespace flag
 } // namespace SDLpp
 
-#endif /* INIT_FLAGS_HPP */
+#endif /* SDLPP_INIT_FLAGS_HPP */
 

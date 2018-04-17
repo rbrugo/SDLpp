@@ -5,8 +5,8 @@
  * @license     : MIT
  * */
 
-#ifndef ALL_HPP
-#define ALL_HPP
+#ifndef SDLPP_ALL_HPP
+#define SDLPP_ALL_HPP
 
 //The core
 #include "system_manager.hpp"
@@ -19,6 +19,9 @@
 #include "blit_surface.hpp"
 #include "load_bmp.hpp"
 
+//Events handling
+#include "events.hpp"
 
-#endif /* ALL_HPP */
+
+#endif /* SDLPP_ALL_HPP */
 
