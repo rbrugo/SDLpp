@@ -4,7 +4,7 @@ I think there's no a real need to write something like this. It's more like an e
 I'm going to write here design changes or ideas I'm having for the SDLpp library, since being my first experience I really do not
 know what shall I do and I don't have ideas about write this in a tidier way.
 This journal shall be maintained in pair with the roadmap to give me a track to follow... So, let's try.
-
+***
 ### `expected` and `optional` components and extension by inheritance
 #### 20/04/2018
 - [ ] `expected` and `optional` components.
@@ -42,3 +42,4 @@ This journal shall be maintained in pair with the roadmap to give me a track to 
 	- [ ] `SDL_Rect`
 	- [ ] `SDL_Surface`
 	- [ ] `SDL_Window` (maybe?)
+***
