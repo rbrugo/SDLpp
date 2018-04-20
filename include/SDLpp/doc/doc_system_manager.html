@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>system_manager.hpp</title>
+</head>
+<body>
+<article id="standardese-system_manager-hpp" class="standardese-file-documentation">
+<h1 class="standardese-file-documentation-heading">Header file <code>system_manager.hpp</code></h1>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="kwd">namespace</span> <span class="typ dec var fun">SDLpp</span>
+<span class="pun">{</span>
+    <span class="kwd">class</span> <span class="typ dec var fun">system_manager</span><span class="pun">;</span>
+
+    <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+    <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__system_manager-Fs--Fs------"><span class="typ dec var fun">system_manager</span></a><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__system_manager-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+
+    <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__-system_manager--"><span class="typ dec var fun">~system_manager</span></a><span class="pun">(</span><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+
+    &#x2F;&#x2F;=== sysmgr_init ===&#x2F;&#x2F;
+    <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs-------Fs"><span class="typ dec var fun">Fs</span></a><span class="pun">&gt;</span>
+    <span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs------"><span class="typ dec var fun">init</span></a><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+    <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+    <span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs------"><span class="typ dec var fun">init_subsystem</span></a><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init_subsystem-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+
+    <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+    <span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__init_permanent-Fs--Fs------"><span class="typ dec var fun">init_permanent</span></a><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init_permanent-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+
+    <span class="kwd">constexpr</span> <span class="typ dec var fun">system_manager::</span><span class="kwd">operator</span> <span class="kwd">bool</span><span class="pun">(</span><span class="pun">)</span> <span class="kwd">const</span><span class="pun">;</span>
+
+    <span class="kwd">constexpr</span> <span class="kwd">bool</span> <span class="typ dec var fun">system_manager::</span><a href="doc_system_manager.html#standardese-SDLpp__good--const"><span class="typ dec var fun">good</span></a><span class="pun">(</span><span class="pun">)</span> <span class="kwd">const</span><span class="pun">;</span>
+<span class="pun">}</span>
+</code></pre>
+<section id="standardese-SDLpp" class="standardese-entity-documentation">
+<section id="standardese-SDLpp__system_manager-Fs--Fs------" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Constructor <code>SDLpp::system_manager</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+<span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">system_manager</span><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__system_manager-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+</code></pre>
+<p id="standardese-SDLpp__system_manager-Fs--Fs-------brief" class="standardese-brief-section">Constructor.</p>
+<dl id="standardese-SDLpp__system_manager-Fs--Fs-------inline-sections" class="standardese-inline-sections">
+<dt>Requires:</dt>
+<dd>If at least an object of type flag::{init,img} is passed as argument, SDL or IMG
+will be initialized with that flag.</dd>
+</dl>
+<h4 class="standardese-list-section-heading">Parameters</h4>
+<ul id="standardese-SDLpp__system_manager-Fs--Fs-------params" class="standardese-list-section">
+<li id="standardese-SDLpp__system_manager-Fs--Fs-------flags">
+<dl id="standardese-SDLpp__system_manager-Fs--Fs-------flags" class="standardese-term-description-item">
+<dt><code>flags</code></dt>
+<dd>&mdash; One or more arguments of tipe flag::{init,img}.</dd>
+</dl>
+</li>
+</ul>
+</section>
+<hr class="standardese-entity-documentation-break" />
+<section id="standardese-SDLpp__-system_manager--" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Destructor <code>SDLpp::~system_manager</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">~system_manager</span><span class="pun">(</span><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+</code></pre>
+<p id="standardese-SDLpp__-system_manager---brief" class="standardese-brief-section">Destructor.</p>
+<dl id="standardese-SDLpp__-system_manager---inline-sections" class="standardese-inline-sections">
+<dt>Effects:</dt>
+<dd>Uninitialize every SDL subsystem initialized by the instance (except for the one initialized
+by <a href="doc_system_manager.html#standardese-SDLpp"><code>SDLpp::system_manager::init_permanent</code></a>).</dd>
+<dt>Notes:</dt>
+<dd>The destructor cannot uninitialize IMG subsystems.</dd>
+</dl>
+</section>
+<hr class="standardese-entity-documentation-break" />
+<section id="standardese-SDLpp__init-Fs--Fs------" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Function <code>SDLpp::init</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis">(1) <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs-------Fs"><span class="typ dec var fun">Fs</span></a><span class="pun">&gt;</span>
+<span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">init</span><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+
+(2) <span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+<span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">init_subsystem</span><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init_subsystem-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+</code></pre>
+<dl id="standardese-SDLpp__init-Fs--Fs-------inline-sections" class="standardese-inline-sections">
+<dt>Effects:</dt>
+<dd>Initializes SDL or IMG with flags passed as argument. Subsystems will be uninitialized on
+destruction.</dd>
+</dl>
+<h4 class="standardese-list-section-heading">Template parameters</h4>
+<ul id="standardese-SDLpp__init-Fs--Fs-------tparams" class="standardese-list-section">
+<li id="standardese-SDLpp__init-Fs--Fs-------Fs">
+<dl id="standardese-SDLpp__init-Fs--Fs-------Fs" class="standardese-term-description-item">
+<dt><code>Fs</code></dt>
+<dd>&mdash; <code>flags</code>’ pack type.</dd>
+</dl>
+</li>
+</ul>
+<section id="standardese-SDLpp__init-Fs--Fs-------flags" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Parameter <code>SDLpp::flags</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis">Fs &amp;&amp;... <span class="typ dec var fun">flags</span></code></pre>
+<p id="standardese-SDLpp__init-Fs--Fs-------flags-brief" class="standardese-brief-section">At least a flag object.</p>
+<dl id="standardese-SDLpp__init-Fs--Fs-------flags-inline-sections" class="standardese-inline-sections">
+<dt>Requires:</dt>
+<dd><code>flags</code>’ type to be <code>flag::</code>{<code>init</code>,<code>img</code>}.</dd>
+<dt>Requires:</dt>
+<dd><code>sizeof...(Fs) &gt; 0</code></dd>
+<dt>Returns:</dt>
+<dd><a href="self">SDLpp::system_manager</a></dd>
+</dl>
+</section>
+<hr class="standardese-entity-documentation-break" />
+</section>
+<hr class="standardese-entity-documentation-break" />
+<section id="standardese-SDLpp__init_permanent-Fs--Fs------" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Function <code>SDLpp::init_permanent</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="kwd">template</span> <span class="pun">&lt;</span><span class="kwd">typename</span> <span class="pun">...</span> <span class="typ dec var fun">Fs</span><span class="pun">&gt;</span>
+<span class="kwd">constexpr</span> <span class="kwd">auto</span> <span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">init_permanent</span><span class="pun">(</span>Fs &amp;&amp;... <a href="doc_system_manager.html#standardese-SDLpp__init_permanent-Fs--Fs-------flags"><span class="typ dec var fun">flags</span></a><span class="pun">)</span> <span class="kwd">noexcept</span><span class="pun">;</span>
+</code></pre>
+<dl id="standardese-SDLpp__init_permanent-Fs--Fs-------inline-sections" class="standardese-inline-sections">
+<dt>Effects:</dt>
+<dd>Initializes SDL or IMG with flags passed as argument. Subsystems will <em>not</em> be uninitialized
+on destruction.</dd>
+</dl>
+<section id="standardese-SDLpp__init_permanent-Fs--Fs-------flags" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Parameter <code>SDLpp::flags</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis">Fs &amp;&amp;... <span class="typ dec var fun">flags</span></code></pre>
+<p id="standardese-SDLpp__init_permanent-Fs--Fs-------flags-brief" class="standardese-brief-section">At least a flag object</p>
+<dl id="standardese-SDLpp__init_permanent-Fs--Fs-------flags-inline-sections" class="standardese-inline-sections">
+<dt>Requires:</dt>
+<dd><code>flags</code>’ type to be <code>flag::</code>{<code>init</code>,<code>img</code>}</dd>
+<dt>Returns:</dt>
+<dd><a href="self">SDLpp::system_manager</a></dd>
+</dl>
+</section>
+<hr class="standardese-entity-documentation-break" />
+</section>
+<hr class="standardese-entity-documentation-break" />
+<section id="standardese-SDLpp__operatorbool--const" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Conversion operator <code>SDLpp::operator bool</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="kwd">constexpr</span> <span class="typ dec var fun">system_manager::</span><span class="kwd">operator</span> <span class="kwd">bool</span><span class="pun">(</span><span class="pun">)</span> <span class="kwd">const</span><span class="pun">;</span>
+</code></pre>
+<dl id="standardese-SDLpp__operatorbool--const-inline-sections" class="standardese-inline-sections">
+<dt>Effects:</dt>
+<dd>Returns <code>true</code> if at least a <code>flag::</code>{<code>init</code>,<code>img</code>} has been initialized, <em>and</em> if the last
+initialization worked well</dd>
+<dt>Returns:</dt>
+<dd>a boolean value about the good state of the initialization</dd>
+</dl>
+</section>
+<hr class="standardese-entity-documentation-break" />
+<section id="standardese-SDLpp__good--const" class="standardese-entity-documentation">
+<h3 class="standardese-entity-documentation-heading">Function <code>SDLpp::good</code></h3>
+<pre><code class="standardese-language-cpp standardese-entity-synopsis"><span class="kwd">constexpr</span> <span class="kwd">bool</span> <span class="typ dec var fun">system_manager::</span><span class="typ dec var fun">good</span><span class="pun">(</span><span class="pun">)</span> <span class="kwd">const</span><span class="pun">;</span>
+</code></pre>
+<dl id="standardese-SDLpp__good--const-inline-sections" class="standardese-inline-sections">
+<dt>Effects:</dt>
+<dd>Check if the last initialization worked well</dd>
+<dt>Returns:</dt>
+<dd><code>true</code> if the last passed flags worked well, <code>false</code> otherwise.</dd>
+<dt>Notes:</dt>
+<dd>if no flag has been passed yet, returns <code>false</code>.</dd>
+</dl>
+</section>
+<hr class="standardese-entity-documentation-break" />
+</section>
+</article>
+</body>
+</html>

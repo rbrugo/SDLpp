@@ -78,7 +78,7 @@ template <typename ...Fs>
 constexpr inline decltype(auto) system_manager::_just_init(Fs &&... flags) noexcept
 {
     if ( ! _instance ) {
-        _instance = std::move(detail::_system_manager_singleton{flags...});
+        _instance = detail::_system_manager_singleton{flags...};
     }
     else {
         _instance->init(flags...);
