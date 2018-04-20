@@ -8,13 +8,10 @@
 #ifndef SDLPP_SURFACE_HPP
 #define SDLPP_SURFACE_HPP
 
-//#include "surface.hpp"
-//#include "owning_surface.hpp"
-//#include "generic_surface.hpp"
-
 #include <memory>
 #include <SDL2/SDL.h>
-#include <optional>
+//#include <optional>
+#include <tl/optional.hpp>
 #include "rectangle.hpp"
 
 #ifndef SDLPP_NO_SDL_IMG
@@ -45,18 +42,21 @@ class surface
 
 public:
     surface() = default;
-    surface(surface const &) = default;
-    surface(surface &&) = default;
-    surface(SDL_Surface &);
-    surface & operator=(surface const &) = default;
-    surface & operator=(surface &&) = default;
-    surface & operator=(SDL_Surface &);
+    surface(surface const &) = delete;
+    surface(surface &&) noexcept = default;
+    explicit surface(SDL_Surface & src);
+    surface & operator=(surface const &) = delete;
+    surface & operator=(surface &&) noexcept = default;
+    surface & operator=(SDL_Surface & src);
+
+    ~surface() = default;
 
     surface & load_bmp(std::string_view filename);
 #ifndef SDLPP_NO_SDL_IMG
     surface & load(std::string_view filename);
 #endif //SDLPP_NO_SDL_IMG
-    surface & fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect = {});
+    //surface & fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect = {});
+    surface & fill(color_t color, tl::optional<rectangle const &> rect = {});
     auto geometry() const;
 
     auto pixel_format() const -> SDL_PixelFormat *;
@@ -72,15 +72,15 @@ private:
     }
 };
 
-surface::surface(SDL_Surface & s) :
-    _handler{ _make_surface_ptr( std::addressof(s) ) }
+surface::surface(SDL_Surface & src) :
+    _handler{ _make_surface_ptr( std::addressof(src) ) }
 {
     ;
 }
 
-auto surface::operator=(SDL_Surface & s) -> surface &
+auto surface::operator=(SDL_Surface & src) -> surface &
 {
-    _handler = _make_surface_ptr( std::addressof(s) );
+    _handler = _make_surface_ptr( std::addressof(src) );
     return *this;
 }
 
@@ -98,12 +98,14 @@ inline auto surface::load(std::string_view filename) -> surface &
 }
 #endif //SDLPP_NO_SDL_IMG
 
-
-auto surface::fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect)
+//TODO: {std->tl}::optional<{std::reference_wrapper<rectangle const>->rectangle const &}>
+//auto surface::fill(color_t color, std::optional<std::reference_wrapper<rectangle const>> rect)
+auto surface::fill(color_t color, tl::optional<rectangle const &> rect)
     -> surface &
 {
     if ( rect.has_value() ) {
-        auto temp = static_cast<SDL_Rect>(rect->get());
+        //auto temp = static_cast<SDL_Rect>(rect->get());
+        auto temp = static_cast<SDL_Rect>(*rect);
         SDL_FillRect( handler(), std::addressof(temp), color);
     }
     else { SDL_FillRect( handler(), nullptr, color ); } //SDL_FillRect should not own the pointer

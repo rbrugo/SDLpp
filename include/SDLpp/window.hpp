@@ -5,8 +5,8 @@
  * @license     : MIT
  * */
 
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef SDLPP_WINDOW_HPP
+#define SDLPP_WINDOW_HPP
 
 #include <SDL2/SDL.h>
 
@@ -172,5 +172,5 @@ inline auto window::get_surface() const -> std::optional<surface>
 
 } // namespace SDLpp
 
-#endif /* WINDOW_HPP */
+#endif /* SDLPP_WINDOW_HPP */
 
