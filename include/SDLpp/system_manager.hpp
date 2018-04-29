@@ -9,11 +9,11 @@
 #define SDLPP_SYSTEM_MANAGER_HPP
 
 #include <vector>
-#include <optional>
+#include <tl/optional.hpp>
 #include "detail/system_manager_singleton.hpp"
 #include "init_flags.hpp"
 
-#include <SDL2/SDL.h>
+//#include <SDL2/SDL.h>
 
 namespace SDLpp
 {
@@ -23,7 +23,7 @@ class system_manager
 private:
     std::vector<flag::init> _init_on;
     //std::vector<flag::img > _img_on; //useless: cannot uninitialize single imgs with flags
-    static inline std::optional<detail::_system_manager_singleton> _instance = {};
+    static inline tl::optional<detail::_system_manager_singleton> _instance = {};
 
 private:
     template <typename ...Fs> constexpr inline decltype(auto) _just_init(Fs &&... flags) noexcept;
@@ -46,7 +46,7 @@ public:
 ///     will be initialized with that flag.
 /// \param flags One or more arguments of tipe flag::{init,img}.
 template <typename ...Fs>
-system_manager::system_manager(Fs &&... flags) noexcept
+inline system_manager::system_manager(Fs &&... flags) noexcept
 {
     if constexpr ( sizeof...(Fs) > 0 ) {
         static_assert(
@@ -62,7 +62,7 @@ system_manager::system_manager(Fs &&... flags) noexcept
 /// \effects Uninitialize every SDL subsystem initialized by the instance (except for the one initialized
 ///     by [SDLpp::system_manager::init_permanent]()).
 /// \notes The destructor cannot uninitialize IMG subsystems.
-system_manager::~system_manager() noexcept
+inline system_manager::~system_manager() noexcept
 {
     for ( auto flag : _init_on ) {
         SDL_QuitSubSystem( static_cast<uint32_t>(flag) );

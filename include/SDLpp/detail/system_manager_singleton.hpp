@@ -9,7 +9,7 @@
 #define SDLPP_DETAIL_SYSTEM_MANAGER_SINGLETON_HPP
 
 #include <utility>
-#include <optional>
+#include <tl/optional.hpp>
 
 #include "../meta/uniform_tuple_accumulate.hpp"
 #include "../meta/is_sdlpp_flag.hpp"
@@ -92,9 +92,9 @@ struct _system_manager_singleton
         return good;
     }
 
-    auto last_result() const -> std::optional<std::pair<flag::init, flag::img>>
+    auto last_result() const -> tl::optional<std::pair<flag::init, flag::img>>
     {
-        return good ? std::optional{_last_result} : std::nullopt;
+        return good ? tl::optional{_last_result} : tl::nullopt;
     }
 
 private:

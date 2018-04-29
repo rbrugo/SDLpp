@@ -5,8 +5,8 @@
  * @license     : MIT
  * */
 
-#ifndef SDLPP_WINDOW_FREE_FUNCTIONS_HPP
-#define SDLPP_WINDOW_FREE_FUNCTIONS_HPP
+#ifndef SDLPP_WINDOW_WINDOW_FREE_FUNCTIONS_HPP
+#define SDLPP_WINDOW_WINDOW_FREE_FUNCTIONS_HPP
 
 #include "window.hpp"
 #include <tl/optional.hpp>
@@ -27,5 +27,5 @@ inline auto get_surface(tl::optional<window> const & opt_w)
 
 } // namespace SDLpp
 
-#endif /* SDLPP_WINDOW_FREE_FUNCTIONS_HPP */
+#endif /* SDLPP_WINDOW_WINDOW_FREE_FUNCTIONS_HPP */
 

@@ -1,5 +1,5 @@
 # SDLpp
-An object-oriented, RAII-managed wrapper for SDL libraries, written in modern C++ (`C++17`).
+An object-oriented, RAII-managed wrapper for SDL libraries, written in modern C++ (in particular `c++17`).
 
 ## Getting Started
 

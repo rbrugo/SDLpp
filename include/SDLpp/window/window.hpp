@@ -5,16 +5,15 @@
  * @license     : MIT
  * */
 
-#ifndef SDLPP_WINDOW_HPP
-#define SDLPP_WINDOW_HPP
+#ifndef SDLPP_WINDOW_WINDOW_HPP
+#define SDLPP_WINDOW_WINDOW_HPP
 
 #include <SDL2/SDL.h>
 
 #include <memory>
 
-//#include "rectangle.hpp"
-#include "rect.hpp"
-#include "surface.hpp"
+#include "../rect.hpp"
+#include "../surface/surface.hpp"
 
 namespace SDLpp
 {
@@ -97,15 +96,13 @@ namespace SDLpp
 class window {
     std::unique_ptr<SDL_Window, detail::window_deleter> _handler;
 
-    using surface_type = surface; //SDL_Surface;
-    //using surface_ptr  = surface_type *;
+    using surface_type = surface;
 
 public:
     window() = default;
     window(window const &) = delete;
     window(window &&) = default;
     explicit window(SDL_Window * const ptr) : _handler{ptr} { ; }
-    //window(std::string_view title, rectangle const & geom, window_flag flags = window_flag::shown);
     window(std::string_view title, rect const & geom, window_flag flags = window_flag::shown);
     window(std::string_view title, int pos_x, int pos_y, int width, int height, window_flag flags);
 
@@ -137,7 +134,6 @@ public:
 
 // Implementations...
 
-//window::window(std::string_view title, rectangle const & geom, window_flag flags)
 window::window(std::string_view title, rect const & geom, window_flag flags)
     : window{title, geom.x, geom.y, geom.w, geom.h, flags}
 {
@@ -181,5 +177,5 @@ inline auto window::get_surface() const -> tl::optional<surface>
 
 } // namespace SDLpp
 
-#endif /* SDLPP_WINDOW_HPP */
+#endif /* SDLPP_WINDOW_WINDOW_HPP */
 
