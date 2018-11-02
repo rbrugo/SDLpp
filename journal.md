@@ -71,5 +71,13 @@ What I've done, is to create a function`SDLpp::match` which accepts a number of 
 argument an `SDLpp::event_category` and executing some code if the `event_category::value` is the
 same value in the `SDL_Event::value` member variable stored in the `SDLpp::event` (a sort of
 `std::visit` for event types). It could be useful in the future also for other types... Keep in mind.
-Now LazyFoo's 3rd tutorial compiles without callind `SDL_` stuff directly... It has been quite a pain,
+Now LazyFoo's 3rd tutorial compiles without calling `SDL_` stuff directly... It has been quite a pain,
 but what a satisfaction!
+
+***
+### 2/10/2018
+A lot of time has passed (because of university), but in this time I decided to try to implement
+a simple version of Arkanoid instead of continuing with tutorials.
+It has been quite a success, now I have a working texture class, a collision::base class and some
+mathematical utils. And a working pseudo-arkanoid.
+

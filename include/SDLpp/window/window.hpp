@@ -32,8 +32,26 @@ struct window_deleter
 
 } //namespace detail
 
+/*enum class window_flag : uint32_t {
+    fullscreen          = SDL_WINDOW_FULLSCREEN,
+    fullscreen_desktop  = SDL_WINDOW_FULLSCREEN_DESKTOP,
+    opengl              = SDL_WINDOW_OPENGL,
+    shown               = SDL_WINDOW_SHOWN,
+    hidden              = SDL_WINDOW_HIDDEN,
+    borderless          = SDL_WINDOW_BORDERLESS,
+    resizable           = SDL_WINDOW_RESIZABLE,
+    minimized           = SDL_WINDOW_MINIMIZED,
+    maximized           = SDL_WINDOW_MAXIMIZED,
+    input_grabbed       = SDL_WINDOW_INPUT_GRABBED,
+    allow_highDPI       = SDL_WINDOW_ALLOW_HIGHDPI
+};
+*/
+namespace flag
+{
+
 /// Enum flags to substitute macros
-enum class window_flag : uint32_t {
+using _window_flag_t = std::underlying_type_t<decltype(SDL_WINDOW_FULLSCREEN)>;
+enum class window : _window_flag_t {
     fullscreen          = SDL_WINDOW_FULLSCREEN,
     fullscreen_desktop  = SDL_WINDOW_FULLSCREEN_DESKTOP,
     opengl              = SDL_WINDOW_OPENGL,
@@ -47,40 +65,60 @@ enum class window_flag : uint32_t {
     allow_highDPI       = SDL_WINDOW_ALLOW_HIGHDPI
 };
 
+
 /* *
- * @brief Allow AND-combinations of window_flags
+ * @brief Allow AND-combinations of flag::windows
  * */
-inline window_flag operator &(window_flag a, window_flag b)
+inline flag::window operator &(flag::window a, flag::window b)
 {
-    return static_cast<window_flag>( static_cast<uint32_t>(a) & static_cast<uint32_t>(b) );
+    return static_cast<flag::window>( static_cast<_window_flag_t>(a) & static_cast<_window_flag_t>(b) );
 }
 
 /* *
- * @brief Allow AND-assignment of window_flags
+ * @brief Allow AND-assignment of flag::windows
  * */
-inline window_flag & operator &=(window_flag & a, window_flag b)
+inline flag::window & operator &=(flag::window & a, flag::window b)
 {
     a = a & b;
     return a;
 }
 
 /* *
- * @brief Allow OR-combinations of window_flags
+ * @brief Allow OR-combinations of flag::windows
  * */
-
-inline window_flag operator |(window_flag a, window_flag b)
+inline flag::window operator |(flag::window a, flag::window b)
 {
-    return static_cast<window_flag>( static_cast<uint32_t>(a) | static_cast<uint32_t>(b) );
+    return static_cast<flag::window>( static_cast<_window_flag_t>(a) | static_cast<_window_flag_t>(b) );
 }
 
 /* *
- * @brief Allow OR-assignment of window_flags
+ * @brief Allow OR-assignment of flag::windows
  * */
-inline window_flag & operator |=(window_flag & a, window_flag b)
+inline flag::window & operator |=(flag::window & a, flag::window b)
 {
     a = a | b;
     return a;
 }
+
+/* *
+ * @brief Allow XOR-combinations of flag::windows
+ * */
+inline flag::window operator ^(flag::window a, flag::window b)
+{
+    return static_cast<flag::window>( static_cast<_window_flag_t>(a) ^ static_cast<_window_flag_t>(b) );
+}
+
+/* *
+ * @brief Allow XOR-assignment of flag::windows
+ * */
+inline flag::window & operator ^=(flag::window & a, flag::window b)
+{
+    a = a ^ b;
+    return a;
+}
+
+} // namespace flag
+
 } // namespace SDLpp
 
 
@@ -91,7 +129,7 @@ namespace SDLpp
 /// Secure wrapper implementing the SDL_Window
 /// window(window const &) = default
 /// window(window &&) = delete
-/// window(std::string_view title, rect const & geom, window_flag flags = window_flag::showm)
+/// window(std::string_view title, rect const & geom, flag_t flags = flag_t::showm)
 
 class window {
     std::unique_ptr<SDL_Window, detail::window_deleter> _handler;
@@ -99,12 +137,13 @@ class window {
     using surface_type = surface;
 
 public:
+    using flag_t = flag::window;
     window() = default;
     window(window const &) = delete;
     window(window &&) = default;
     explicit window(SDL_Window * const ptr) : _handler{ptr} { ; }
-    window(std::string_view title, rect const & geom, window_flag flags = window_flag::shown);
-    window(std::string_view title, int pos_x, int pos_y, int width, int height, window_flag flags);
+    window(std::string_view title, rect const & geom, flag_t flags = flag_t::shown);
+    window(std::string_view title, int pos_x, int pos_y, int width, int height, flag_t flags);
 
     window & operator=(window const &) = delete;
     window & operator=(window &&) = default;
@@ -116,11 +155,11 @@ public:
     inline window & create(
             std::string_view title,
             rect const & geom,
-            window_flag flags = window_flag::shown );
+            flag_t flags = flag_t::shown );
     inline window & create(
             std::string_view title,
             int pos_x, int pos_y, int width, int height,
-            window_flag flags = window_flag::shown );
+            flag_t flags = flag_t::shown );
 
     inline auto get_surface() const -> tl::optional<surface>;
     inline auto update_surface() { return SDL_UpdateWindowSurface( this->handler() ); }
@@ -134,19 +173,19 @@ public:
 
 // Implementations...
 
-window::window(std::string_view title, rect const & geom, window_flag flags)
+inline window::window(std::string_view title, rect const & geom, flag_t flags)
     : window{title, geom.x, geom.y, geom.w, geom.h, flags}
 {
     ;
 }
 
-window::window(std::string_view title, int pos_x, int pos_y, int width, int height, window_flag flags)
+inline window::window(std::string_view title, int pos_x, int pos_y, int width, int height, flag_t flags)
     : _handler{SDL_CreateWindow(title.data(), pos_x, pos_y, width, height, static_cast<uint32_t>(flags) )}
 {
     ;
 }
 
-window & window::create(std::string_view title, rect const & geom, window_flag flags)
+window & window::create(std::string_view title, rect const & geom, flag_t flags)
 {
     return this->create(title, geom.x, geom.y, geom.w, geom.h, flags);
 }
@@ -155,7 +194,7 @@ window & window::create(
         std::string_view title,
         int pos_x, int pos_y,
         int width, int height,
-        window_flag flags
+        flag_t flags
     )
 {
     _handler.reset(

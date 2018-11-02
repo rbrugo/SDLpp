@@ -11,7 +11,7 @@
 #include <SDL2/SDL_events.h>
 #include "event_category.hpp"
 
-#include <typeinfo>
+/* #include <typeinfo> */
 
 namespace SDLpp
 {
@@ -26,6 +26,7 @@ public:
     SDL_Event const & handler() const { return _event; }
     inline auto poll() { return SDL_PollEvent(&_event) != 0; }
 
+    //TODO: da eliminare
     template <typename R, typename A, typename = std::enable_if_t<meta::is_event_category_v<A>, void>>
     inline bool is_invocable_by(R(*f)(A));
     template <
@@ -36,9 +37,11 @@ public:
     >
     inline bool is_invocable_by(R(C::*f)(A) const);
 
+    //TODO: da eliminare
     template <typename R, typename A, typename = std::enable_if_t<meta::is_event_category_v<A>, void>>
     inline auto call(R(*f)(A)) const -> R;
 
+    //TODO: da eliminare
     template < typename R, typename C, typename A, typename = void >
     inline auto call(C && c, R(C::*f)(A) const) const -> R;
 };

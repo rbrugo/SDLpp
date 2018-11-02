@@ -1,0 +1,54 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+SDLPP_SURFACE_HPP	surface.hpp	9;"	d
+SDLpp	surface.hpp	/^namespace SDLpp$/;"	n
+SDLpp::detail	surface.hpp	/^namespace detail$/;"	n	namespace:SDLpp
+SDLpp::detail::surface_deleter	surface.hpp	/^    struct surface_deleter$/;"	s	namespace:SDLpp::detail
+SDLpp::detail::surface_deleter::operator ()	surface.hpp	/^        inline void operator()(SDL_Surface * s)$/;"	f	struct:SDLpp::detail::surface_deleter	access:public	signature:(SDL_Surface * s)
+SDLpp::surface	surface.hpp	/^class surface$/;"	c	namespace:SDLpp
+SDLpp::surface::_make_surface_ptr	surface.hpp	/^    inline auto _make_surface_ptr( SDL_Surface * s ) const$/;"	f	class:SDLpp::surface	access:private	signature:( SDL_Surface * s ) const
+SDLpp::surface::convert	surface.hpp	/^    surface & convert(SDL_PixelFormat const & fmt);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_PixelFormat const & fmt)
+SDLpp::surface::fill	surface.hpp	/^    surface & fill(color_t color, tl::optional<rect const &> rect = {});$/;"	p	class:SDLpp::surface	access:public	signature:(color_t color, tl::optional<rect const &> rect = {})
+SDLpp::surface::geometry	surface.hpp	/^    auto geometry() const;$/;"	p	class:SDLpp::surface	access:public	signature:() const
+SDLpp::surface::geometry	surface.hpp	/^inline auto surface::geometry() const$/;"	f	class:SDLpp::surface	signature:() const
+SDLpp::surface::handler	surface.hpp	/^    decltype(auto) handler() const { return _handler.get(); }$/;"	f	class:SDLpp::surface	access:public	signature:() const
+SDLpp::surface::load	surface.hpp	/^    surface & load(std::string_view filename);$/;"	p	class:SDLpp::surface	access:public	signature:(std::string_view filename)
+SDLpp::surface::load_bmp	surface.hpp	/^    surface & load_bmp(std::string_view filename);$/;"	p	class:SDLpp::surface	access:public	signature:(std::string_view filename)
+SDLpp::surface::noexcept	surface.hpp	/^    surface & operator=(surface &&) noexcept = default;$/;"	m	class:SDLpp::surface	access:public
+SDLpp::surface::noexcept	surface.hpp	/^    surface(surface &&) noexcept = default;$/;"	m	class:SDLpp::surface	access:public
+SDLpp::surface::operator =	surface.hpp	/^    surface & operator=(SDL_Surface & src);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_Surface & src)
+SDLpp::surface::operator =	surface.hpp	/^    surface & operator=(surface const &) = delete;$/;"	p	class:SDLpp::surface	access:public	signature:(surface const &)
+SDLpp::surface::surface	surface.hpp	/^    explicit surface(SDL_Surface & src);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_Surface & src)
+SDLpp::surface::surface	surface.hpp	/^    surface() = default;$/;"	p	class:SDLpp::surface	access:public	signature:()
+SDLpp::surface::surface	surface.hpp	/^    surface(surface const &) = delete;$/;"	p	class:SDLpp::surface	access:public	signature:(surface const &)
+SDLpp::surface::surface	surface.hpp	/^inline surface::surface(SDL_Surface & src) :$/;"	f	class:SDLpp::surface	signature:(SDL_Surface & src)
+SDLpp::surface::tl::optional	surface.hpp	/^    auto pixel_format() const -> tl::optional<SDL_PixelFormat &>;$/;"	m	class:SDLpp::surface::tl	access:public
+SDLpp::surface::valid	surface.hpp	/^    bool valid() const { return static_cast<bool>(_handler); }$/;"	f	class:SDLpp::surface	access:public	signature:() const
+SDLpp::surface::~surface	surface.hpp	/^    ~surface() = default;$/;"	p	class:SDLpp::surface	access:public	signature:()
+_make_surface_ptr	surface.hpp	/^    inline auto _make_surface_ptr( SDL_Surface * s ) const$/;"	f	class:SDLpp::surface	access:private	signature:( SDL_Surface * s ) const
+convert	surface.hpp	/^    surface & convert(SDL_PixelFormat const & fmt);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_PixelFormat const & fmt)
+detail	surface.hpp	/^namespace detail$/;"	n	namespace:SDLpp
+fill	surface.hpp	/^    surface & fill(color_t color, tl::optional<rect const &> rect = {});$/;"	p	class:SDLpp::surface	access:public	signature:(color_t color, tl::optional<rect const &> rect = {})
+geometry	surface.hpp	/^    auto geometry() const;$/;"	p	class:SDLpp::surface	access:public	signature:() const
+geometry	surface.hpp	/^inline auto surface::geometry() const$/;"	f	class:SDLpp::surface	signature:() const
+handler	surface.hpp	/^    decltype(auto) handler() const { return _handler.get(); }$/;"	f	class:SDLpp::surface	access:public	signature:() const
+load	surface.hpp	/^    surface & load(std::string_view filename);$/;"	p	class:SDLpp::surface	access:public	signature:(std::string_view filename)
+load_bmp	surface.hpp	/^    surface & load_bmp(std::string_view filename);$/;"	p	class:SDLpp::surface	access:public	signature:(std::string_view filename)
+noexcept	surface.hpp	/^    surface & operator=(surface &&) noexcept = default;$/;"	m	class:SDLpp::surface	access:public
+noexcept	surface.hpp	/^    surface(surface &&) noexcept = default;$/;"	m	class:SDLpp::surface	access:public
+operator ()	surface.hpp	/^        inline void operator()(SDL_Surface * s)$/;"	f	struct:SDLpp::detail::surface_deleter	access:public	signature:(SDL_Surface * s)
+operator =	surface.hpp	/^    surface & operator=(SDL_Surface & src);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_Surface & src)
+operator =	surface.hpp	/^    surface & operator=(surface const &) = delete;$/;"	p	class:SDLpp::surface	access:public	signature:(surface const &)
+optional	surface.hpp	/^    auto pixel_format() const -> tl::optional<SDL_PixelFormat &>;$/;"	m	class:SDLpp::surface::tl	access:public
+surface	surface.hpp	/^    explicit surface(SDL_Surface & src);$/;"	p	class:SDLpp::surface	access:public	signature:(SDL_Surface & src)
+surface	surface.hpp	/^    surface() = default;$/;"	p	class:SDLpp::surface	access:public	signature:()
+surface	surface.hpp	/^    surface(surface const &) = delete;$/;"	p	class:SDLpp::surface	access:public	signature:(surface const &)
+surface	surface.hpp	/^class surface$/;"	c	namespace:SDLpp
+surface	surface.hpp	/^inline surface::surface(SDL_Surface & src) :$/;"	f	class:SDLpp::surface	signature:(SDL_Surface & src)
+surface_deleter	surface.hpp	/^    struct surface_deleter$/;"	s	namespace:SDLpp::detail
+valid	surface.hpp	/^    bool valid() const { return static_cast<bool>(_handler); }$/;"	f	class:SDLpp::surface	access:public	signature:() const
+~surface	surface.hpp	/^    ~surface() = default;$/;"	p	class:SDLpp::surface	access:public	signature:()

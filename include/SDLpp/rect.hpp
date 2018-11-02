@@ -13,13 +13,14 @@
 
 namespace SDLpp
 {
+constexpr auto const windowpos_undefined = SDL_WINDOWPOS_UNDEFINED;
 
 struct rect : public SDL_Rect
 {
-    rect() = default;
-    rect(int x, int y, int w, int h) noexcept : SDL_Rect{x,y,w,h} {};
-    rect(int w, int h) noexcept : rect{SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h} {};
-    explicit rect(SDL_Rect origin) : SDL_Rect{origin} {};
+    constexpr rect() : rect{0, 0} {};
+    constexpr rect(int x, int y, int w, int h) noexcept : SDL_Rect{x,y,w,h} {};
+    constexpr rect(int w, int h) noexcept : rect{windowpos_undefined, windowpos_undefined, w, h} {};
+    constexpr explicit rect(SDL_Rect origin) : SDL_Rect{origin} {};
 };
 
 } // namespace SDLpp

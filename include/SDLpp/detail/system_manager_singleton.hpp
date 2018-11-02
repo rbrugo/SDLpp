@@ -72,7 +72,11 @@ struct _system_manager_singleton
                     flag::img{},
                     std::bit_or<flag::img>{}
                 );
-            good &= IMG_Init( static_cast<flag::_sdl_img_flag_t>(accumulated_flag) ) == 0;
+            good &=
+                (
+                    IMG_Init( static_cast<flag::_sdl_img_flag_t>(accumulated_flag) )
+                    & static_cast<flag::_sdl_img_flag_t>(accumulated_flag)
+                ) != 0;
             std::get<1>(_last_result) = accumulated_flag;
         }
         else {
