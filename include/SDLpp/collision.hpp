@@ -8,16 +8,9 @@
 #ifndef SDLPP_COLLISION_HPP
 #define SDLPP_COLLISION_HPP
 
-/* #include <vector.hpp> */
-/* #include "math.hpp" */
 #include "math.hpp"
-/* #include <algorithm> */
-/* #include <numeric> */
-#include <range/v3/numeric.hpp>
-#include <range/v3/algorithm.hpp>
-#include <range/v3/view/zip.hpp>
-#include <range/v3/view/drop.hpp>
-#include <range/v3/view/transform.hpp>
+#include <numeric>
+#include <algorithm> // std::ranges::transform, std::ranges::find_if
 #include <memory> //std::shared_from_this
 #include <cstdint>
 #include <cmath>
@@ -122,11 +115,9 @@ public:
     }
 
     template <typename T, typename = std::enable_if_t<std::is_base_of_v<base, std::decay_t<T>>>>
-    /* bool collides(T const & rhs) const */
     tl::optional<double> collides(T const & rhs) const
     {
         if ( std::addressof(rhs) == this ) {
-            /* return false; */
             return tl::nullopt;
         }
         base const & other = rhs;
@@ -142,13 +133,12 @@ public:
             (left() >= other.right() || right() <= other.left()) ||
             (top() >= other.bottom() || bottom() <= other.top())
         ) {
-            /* return false; */
             return tl::nullopt;
         }
 
         //Second phase
         //NB: _separating axis theorem_
-        namespace view = ranges::view;
+        namespace view = std::views;
         auto sum_points = [](auto const & a, auto const & b) {
             auto const & [xa, ya] = a;
             auto const & [xb, yb] = b;
@@ -158,8 +148,8 @@ public:
 
         auto const & first  = _shape.points;
         auto const & second = other._shape.points;
-        auto avg_first = ranges::accumulate(first, point2d{0, 0}, sum_points) / size(first);
-        auto avg_secnd = ranges::accumulate(second, point2d{0, 0}, sum_points) / size(second);
+        auto avg_first = std::accumulate(begin(first), end(first), point2d{0, 0}, sum_points) / size(first);
+        auto avg_secnd = std::accumulate(begin(second), end(second), point2d{0, 0}, sum_points) / size(second);
 
         auto test_collision = [&first, &second, avg_first, avg_secnd](auto const& pta, auto const& ptb) {
             auto const diff = ptb - pta;
@@ -167,32 +157,28 @@ public:
             auto project = [theta](auto n) {
                 return n.rotate(-theta).x();
             };
-            auto [min_f, max_f] = ranges::minmax(first  | view::transform(project));
-            auto [min_s, max_s] = ranges::minmax(second | view::transform(project));
+            auto [min_f, max_f] = std::ranges::minmax(first  | view::transform(project));
+            auto [min_s, max_s] = std::ranges::minmax(second | view::transform(project));
 
             if (project(avg_first) <= project(avg_secnd)) {
                 return !(max_f < min_s);
-                /* if (not (max_f < min_s)) { */
-                    /* return tl::optional{theta}; */
-                /* } */
             }
             return !(min_f > max_s);
-            /* return !(min_f > max_s) ? tl::optional{theta} : {tl::nullopt}; */
-            /* if (!(min_f > max_s)) { */
-                /* return tl::optional{theta}; */
-            /* } */
-            /* return tl::optional<double>{}; */
         };
 
+        auto it = std::ranges::adjacent_find(first, [&](auto const & pta, auto const & ptb) {
+            return test_collision(pta, ptb).has_value();
+        });
 
-        for (auto const & [pta, ptb] : view::zip(first, first | view::drop(1))) {
-            /* if (test_collision(pta, ptb)) { */
-                /* return true; */
-            /* } */
-            if (auto res = test_collision(pta, ptb); res.has_value()) {
-                return res;
-            }
+        if (it != end(first)) {
+            return *it;
         }
+
+        // for (auto const & [pta, ptb] : view::zip(first, first | view::drop(1))) {
+        //     if (auto res = test_collision(pta, ptb); res.has_value()) {
+        //         return res;
+        //     }
+        // }
         return test_collision(first.back(), first.front());
     }
 };
