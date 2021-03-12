@@ -9,7 +9,7 @@
 #define SDLPP_PAINT_GRAPHIC_ENTITY_HPP
 
 #include "../texture.hpp"
-#include "../math/graphic_2d.hpp"
+#include "../math/point_vector.hpp"
 
 namespace SDLpp::paint
 {
@@ -17,10 +17,10 @@ namespace SDLpp::paint
 class graphic_entity //NOLINT
 {
 protected:
-    using point = math::point2d;
-    using vector = math::vector2d;
+    using point = point2d;
+    using vector = vector2d;
 
-    renderer & _ren;
+    renderer * _ren;
     point _origin;
 
 public:
@@ -34,7 +34,8 @@ public:
     virtual        auto display()  const                        -> void = 0; //graphic_entity & = 0;
 };
 
-constexpr graphic_entity::graphic_entity(renderer & ren, point const & origin) : _ren{ren}, _origin{origin}
+constexpr graphic_entity::graphic_entity(renderer & ren, point const & origin)
+    : _ren{std::addressof(ren)}, _origin{origin}
 {
     ;
 }

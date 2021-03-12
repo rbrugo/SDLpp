@@ -26,18 +26,31 @@ inline renderer::renderer(window const & w, flag_t flag) noexcept
     ;
 }
 
+inline rect renderer::size() const noexcept
+{
+    auto w = 0, h = 0;
+    SDL_GetRendererOutputSize(_handler.get(), &w, &h); //return?
+    return {0, 0, w, h};
+}
+
+inline renderer & renderer::blend_mode(flag::blend_mode const mode) noexcept
+{
+    SDL_SetRenderDrawBlendMode(_handler.get(), static_cast<SDL_BlendMode>(mode)); //return? FIXME
+    return *this;
+}
+
 inline renderer & renderer::set_draw_color(color draw_color)
 {
     return set_draw_color(draw_color.r, draw_color.g, draw_color.b, draw_color.a);
 }
 
-inline renderer & renderer::set_draw_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+inline renderer & renderer::set_draw_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) noexcept
 {
     SDL_SetRenderDrawColor(_handler.get(), red, green, blue, alpha);
     return *this;
 }
 
-inline renderer & renderer::clear()
+inline renderer & renderer::clear() noexcept
 {
     SDL_RenderClear( handler() );
     return *this;

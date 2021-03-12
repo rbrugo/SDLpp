@@ -12,6 +12,7 @@
 #include "event/event_category.hpp"
 #include "event/match.hpp"
 #include "event/poll_event.hpp"
+#include "event/event_range.hpp"
 
 #endif /* EVENT_HPP */
 

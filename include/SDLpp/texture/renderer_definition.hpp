@@ -36,6 +36,14 @@ namespace flag
         target_texture = SDL_RENDERER_TARGETTEXTURE
     };
 
+    using _renderer_blend_mode_t = std::underlying_type_t<decltype(SDL_BLENDMODE_NONE)>;
+    enum class blend_mode : _renderer_blend_mode_t {
+        none  = SDL_BLENDMODE_NONE,
+        blend = SDL_BLENDMODE_BLEND,
+        add   = SDL_BLENDMODE_ADD,
+        mod   = SDL_BLENDMODE_MOD
+    };
+
     inline flag::renderer operator &(flag::renderer a, flag::renderer b)
     {
         return static_cast<flag::renderer>(
@@ -97,10 +105,14 @@ public:
     renderer & operator=(renderer && other) noexcept = default;
     ~renderer() = default;
 
-    renderer & set_draw_color(color draw_color);
-    renderer & set_draw_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+    rect size() const noexcept;
 
-    renderer & clear(); //Clear the screen
+    renderer & blend_mode(flag::blend_mode const mode) noexcept;
+
+    renderer & set_draw_color(color draw_color);
+    renderer & set_draw_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) noexcept;
+
+    renderer & clear() noexcept; //Clear the screen
     //Copy the texture on the surface
     renderer & copy(texture_node const & t, tl::optional<rect const &> src = {}, tl::optional<rect const &> dst = {});
     renderer & copy(texture const & t, tl::optional<rect const &> src = {}, tl::optional<rect const &> dst = {});

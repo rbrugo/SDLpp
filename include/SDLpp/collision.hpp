@@ -24,6 +24,8 @@
 
 #include <vector> //namespace test
 
+#include <tl/optional.hpp>
+
 namespace SDLpp
 {
 
@@ -37,10 +39,10 @@ struct shape {
     shape & operator=(shape const &) = default;
     shape & operator=(shape      &&) = default;
     ~shape() = default;
-    explicit shape(std::vector<math::point2d> pts) : points{std::move(pts)}, updated{false} { };
-    shape(std::initializer_list<math::point2d> pts) : points{pts}, updated{false} { };
+    explicit shape(std::vector<point2d> pts) : points{std::move(pts)}, updated{false} { };
+    shape(std::initializer_list<point2d> pts) : points{pts}, updated{false} { };
 
-    std::vector<math::point2d> points;
+    std::vector<point2d> points;
     /*int16_t*/double top{}, bottom{}, left{}, right{};
     bool updated = false;
     void update()
@@ -62,7 +64,7 @@ struct shape {
 
 struct base : public std::enable_shared_from_this<base> {
 private:
-    math::point2d _origin = {0, 0};
+    point2d _origin = {0, 0};
     mutable shape _shape;
 
     inline void update() const
@@ -76,13 +78,13 @@ public:
     base & operator=(base const &) = default;
     base & operator=(base      &&) = default;
     virtual ~base() = default;
-    explicit base(math::point2d origin, shape sh = {}) : _origin{origin}, _shape{std::move(sh)} { }
+    explicit base(point2d origin, shape sh = {}) : _origin{origin}, _shape{std::move(sh)} { }
 
-    auto origin() const -> math::point2d { return _origin; }
-    auto origin() -> math::point2d & { return _origin; }
+    auto origin() const -> point2d { return _origin; }
+    auto origin() -> point2d & { return _origin; }
 
     virtual void move(double dx, double dy) { _origin.x() += dx; _origin.y() += dy; }
-    virtual void move(math::vector2d const & dr) { origin() += dr; }
+    virtual void move(vector2d const & dr) { origin() += dr; }
     virtual double left() const
     {
         if (!_shape.updated) {
@@ -111,19 +113,21 @@ public:
         }
         return _shape.bottom + _origin.y();
     }
-    virtual math::point2d center() const
+    virtual point2d center() const
     {
         if (!_shape.updated) {
             update();
         }
-        return math::point2d{left() + right(), top() + bottom()} * 0.5;
+        return point2d{left() + right(), top() + bottom()} * 0.5;
     }
 
     template <typename T, typename = std::enable_if_t<std::is_base_of_v<base, std::decay_t<T>>>>
-    bool collides(T const & rhs) const
+    /* bool collides(T const & rhs) const */
+    tl::optional<double> collides(T const & rhs) const
     {
         if ( std::addressof(rhs) == this ) {
-            return false;
+            /* return false; */
+            return tl::nullopt;
         }
         base const & other = rhs;
         if (!_shape.updated) {
@@ -138,23 +142,24 @@ public:
             (left() >= other.right() || right() <= other.left()) ||
             (top() >= other.bottom() || bottom() <= other.top())
         ) {
-            return false;
+            /* return false; */
+            return tl::nullopt;
         }
 
         //Second phase
+        //NB: _separating axis theorem_
         namespace view = ranges::view;
         auto sum_points = [](auto const & a, auto const & b) {
             auto const & [xa, ya] = a;
             auto const & [xb, yb] = b;
-            return math::point2d{xa + xb, ya + yb};
+            return point2d{xa + xb, ya + yb};
         };
 
 
-        /* math::point2d a = sum_points(math::point2d{0, 0}, math::point2d{1, 3}); */
         auto const & first  = _shape.points;
         auto const & second = other._shape.points;
-        auto avg_first = ranges::accumulate(first, math::point2d{0, 0}, sum_points) / size(first);
-        auto avg_secnd = ranges::accumulate(second, math::point2d{0, 0}, sum_points) / size(second);
+        auto avg_first = ranges::accumulate(first, point2d{0, 0}, sum_points) / size(first);
+        auto avg_secnd = ranges::accumulate(second, point2d{0, 0}, sum_points) / size(second);
 
         auto test_collision = [&first, &second, avg_first, avg_secnd](auto const& pta, auto const& ptb) {
             auto const diff = ptb - pta;
@@ -167,14 +172,25 @@ public:
 
             if (project(avg_first) <= project(avg_secnd)) {
                 return !(max_f < min_s);
+                /* if (not (max_f < min_s)) { */
+                    /* return tl::optional{theta}; */
+                /* } */
             }
             return !(min_f > max_s);
+            /* return !(min_f > max_s) ? tl::optional{theta} : {tl::nullopt}; */
+            /* if (!(min_f > max_s)) { */
+                /* return tl::optional{theta}; */
+            /* } */
+            /* return tl::optional<double>{}; */
         };
 
 
         for (auto const & [pta, ptb] : view::zip(first, first | view::drop(1))) {
-            if (test_collision(pta, ptb)) {
-                return true;
+            /* if (test_collision(pta, ptb)) { */
+                /* return true; */
+            /* } */
+            if (auto res = test_collision(pta, ptb); res.has_value()) {
+                return res;
             }
         }
         return test_collision(first.back(), first.front());

@@ -26,10 +26,11 @@ namespace detail
     ///Function-object used to delete surfaces in std::unique_ptr
     struct surface_deleter
     {
+        bool must_free = false;
         inline void operator()(SDL_Surface * s)
         {
             //SDL_FreeSurface "knows" whether free the surface
-            SDL_FreeSurface(s);
+            if (s != nullptr and must_free) SDL_FreeSurface(s);
         }
     };
 } // namespace detail
@@ -44,10 +45,10 @@ public:
     surface() = default;
     surface(surface const &) = delete;
     surface(surface &&) noexcept = default;
-    explicit surface(SDL_Surface & src);
+    explicit surface(SDL_Surface * src, bool must_free);
     surface & operator=(surface const &) = delete;
-    surface & operator=(surface &&) noexcept = default;
-    surface & operator=(SDL_Surface & src);
+    surface & operator=(surface &&) noexcept;
+    /* surface & operator=(SDL_Surface * src); //Cannot set must_free */
 
     ~surface() = default;
 
@@ -70,27 +71,36 @@ public:
     bool valid() const { return static_cast<bool>(_handler); }
 
 private:
-    inline auto _make_surface_ptr( SDL_Surface * s ) const
+    static inline auto _make_surface_ptr( SDL_Surface * s, bool must_free )
     {
-        return std::unique_ptr<SDL_Surface, detail::surface_deleter>( s );
+        auto deleter = detail::surface_deleter{must_free};
+        return std::unique_ptr<SDL_Surface, detail::surface_deleter>( s, deleter );
     }
 };
 
-inline surface::surface(SDL_Surface & src) :
-    _handler{ _make_surface_ptr( std::addressof(src) ) }
+inline surface::surface(SDL_Surface * src, bool must_free) :
+    _handler{ _make_surface_ptr(src, must_free) }
 {
     ;
 }
 
-inline auto surface::operator=(SDL_Surface & src) -> surface &
+inline auto surface::operator=(surface && other) noexcept -> surface &
 {
-    _handler = _make_surface_ptr( std::addressof(src) );
+    _handler = std::move(other._handler);
+    other._handler = nullptr;
     return *this;
 }
+
+/* inline auto surface::operator=(SDL_Surface * src) -> surface & */
+/* { */
+    /* _handler = _make_surface_ptr( src ); */
+    /* return *this; */
+/* } */
 
 inline auto surface::load_bmp( std::string_view filename ) & -> surface &
 {
     _handler.reset(SDL_LoadBMP(filename.data()));
+    _handler.get_deleter().must_free = true;
     return *this;
 }
 
@@ -103,6 +113,7 @@ inline auto surface::load_bmp( std::string_view filename ) && -> surface
 inline auto surface::load(std::string_view filename) & -> surface &
 {
     _handler.reset(IMG_Load(filename.data()));
+    _handler.get_deleter().must_free = true;
     return *this;
 }
 
@@ -149,6 +160,7 @@ inline auto surface::convert(tl::optional<SDL_PixelFormat &> const & fmt) & -> s
     auto res = SDL_ConvertSurface(_handler.get(), std::addressof(*fmt), 0);
     if ( res != nullptr ) {
         _handler.reset(res);
+        _handler.get_deleter().must_free = true;
     }
     return *this;
 }

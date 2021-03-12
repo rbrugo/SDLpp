@@ -69,7 +69,7 @@ inline void sprite::display() const
     auto [_x, _y] = _origin;
     auto pos  = SDLpp::rect{static_cast<int32_t>(_x), static_cast<int32_t>(_y), w, h};
     auto crop = SDLpp::rect{x1, y0, w, h};
-    _ren.copy(_texture, {crop}, {pos});
+    _ren->copy(_texture, {crop}, {pos});
     if (++_frame_counter == _cycles_per_sprite) {
         ++_frame_index;
         _frame_counter = 0;

@@ -5,10 +5,11 @@
  * @license     : MIT
  * */
 
-#ifndef MATH_HPP
-#define MATH_HPP
+#ifndef SDLPP_MATH_HPP
+#define SDLPP_MATH_HPP
 
 #include "math/angles.hpp"
-#include "math/graphic_2d.hpp"
+#include "math/point_vector.hpp"
+/* #include "math/graphic_2d.hpp" */
 
-#endif /* MATH_HPP */
+#endif /* SDLPP_MATH_HPP */

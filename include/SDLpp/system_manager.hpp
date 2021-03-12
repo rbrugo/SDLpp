@@ -23,6 +23,7 @@ class system_manager
 private:
     std::vector<flag::init> _init_on;
     //std::vector<flag::img > _img_on; //useless: cannot uninitialize single imgs with flags
+    static inline uint8_t _active_count = 0;
     static inline tl::optional<detail::_system_manager_singleton> _instance = {};
 
 private:
@@ -56,6 +57,7 @@ inline system_manager::system_manager(Fs &&... flags) noexcept
             );
         init( std::forward<Fs>(flags)... );
     }
+    ++_active_count;
 }
 
 /// Destructor.
@@ -66,6 +68,9 @@ inline system_manager::~system_manager() noexcept
 {
     for ( auto flag : _init_on ) {
         SDL_QuitSubSystem( static_cast<uint32_t>(flag) );
+    }
+    if (--_active_count == 0) {
+        SDL_Quit();
     }
 }
 

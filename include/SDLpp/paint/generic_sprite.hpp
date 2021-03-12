@@ -10,7 +10,7 @@
 
 /* #include <SDLpp/texture.hpp> */
 #include "../texture.hpp"
-#include "../math/graphic_2d.hpp"
+#include "../math/point_vector.hpp"
 #include "graphic_entity.hpp"
 
 namespace SDLpp::paint

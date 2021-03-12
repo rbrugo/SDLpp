@@ -164,6 +164,8 @@ public:
     inline auto get_surface() const -> tl::optional<surface>;
     inline auto update_surface() { return SDL_UpdateWindowSurface( this->handler() ); }
 
+    inline auto id() const -> uint32_t { return SDL_GetWindowID(handler()); }
+
     void reset() { _handler.reset(); }
 
     bool valid() const { return static_cast<bool>( *this ); }
@@ -211,7 +213,7 @@ inline auto window::get_surface() const -> tl::optional<surface>
     if ( res == nullptr ) {
         return { tl::nullopt };
     }
-    return { surface{*res} };
+    return { surface{res, false} };
 }
 
 } // namespace SDLpp
